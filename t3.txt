@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: check service
+    service_facts:
+  - name: install nginx
+    package:
+       name: nginx
+       state: latest
+    when: (ansible_facts.services['nginx.service'].state == "unknown")
+  - name: start service
+    service: 
+      name: nginx
+      state: started
+      enabled: true
+  - name:  home page
+    copy: 
+      content: "hello world"
+      dest: /var/www/html/index.html
+
+

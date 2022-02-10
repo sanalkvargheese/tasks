@@ -1,0 +1,58 @@
+---
+- name: Install and Uninstall nginx
+  hosts: all
+  become: true
+  tasks:
+    - name: check service
+service_facts:
+    - name: Install nginx
+      package: 
+        name: nginx
+        state: present
+      when: ( ansible_facts.services['nginx.service'].state == "unknown")
+    - name: Start nginx
+      service: 
+        name: nginx
+        state: started
+    - name: Stop nginx
+      service: 
+        name: nginx
+        state: stopped
+    - name: Uninstall nginx on CentOS  Server
+      package: 
+        name: nginx
+        state: absent
+    - name: Install mysql-server
+      package:  
+        name: mysql-server  
+        state: present
+      when: (ansible_facts.services['nginx.service'].state == "unknown")
+    - name: Start mysql-server
+      service: 
+        name: mysql
+        state: started
+    - name: Stop mysql-server 
+      service: 
+        name: mysql
+        state: stopped
+    - name: Uninstall mysql-server
+      package: 
+        name: mysql
+        state: absent
+    - name: Install psql
+      package: 
+        name: postgresql-server
+        state: present
+      when: (ansible_facts.services['nginx.service'].state == "unknown")
+    - name: Start psql
+      service: 
+        name: postgresql
+        state: started
+    - name: Stop mysql-server
+      service: 
+        name: postgresql
+        state: stopped
+    - name: Uninstall postgresql
+      package: 
+        name: postgresql
+        state: absent
